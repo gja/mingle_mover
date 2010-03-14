@@ -1,5 +1,3 @@
-require 'git'
-
 class GitDao
     def initialize(directory)
         @git = Git.open(directory)

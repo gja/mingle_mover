@@ -1,8 +1,4 @@
-$url = "http://localhost"
-
-require '../lib/Card'
-require '../lib/Transition'
-require 'active_resource/http_mock'
+require 'config'
 
 describe Card do
     before do

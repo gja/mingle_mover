@@ -1,5 +1,4 @@
-require 'mocha'
-require '../lib/GitParse'
+require 'config'
 
 describe GitParse do
     it "Should Return All Logs Matching A Regular Expression" do

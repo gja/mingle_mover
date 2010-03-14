@@ -1,5 +1,3 @@
-require 'activeresource'
-
 class Card < ActiveResource::Base
     self.site = $url
 
