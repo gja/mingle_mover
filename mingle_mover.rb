@@ -1,0 +1,5 @@
+require 'config'
+require 'lib/Card'
+require 'lib/Transition'
+require 'lib/GitDao'
+require 'lib/GitParse'
