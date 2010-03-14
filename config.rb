@@ -6,6 +6,6 @@ $number_of_logs = 100
 $git_directory = "."
 
 begin
-    require 'actual_config'
+    require File.dirname(__FILE__) + '/actual_config'
 rescue LoadError
 end
