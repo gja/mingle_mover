@@ -4,3 +4,8 @@ $url = "https://#{user}:#{password}@minglehosting.thoughtworks.com/PROJECTNAME/a
 $pattern = /Mingle-#\d+/
 $number_of_logs = 100
 $git_directory = "."
+
+begin
+    require 'actual_config'
+rescue LoadError
+end
