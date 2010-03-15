@@ -3,7 +3,7 @@ require 'config'
 describe Card do
     before do
         ActiveResource::HttpMock.respond_to do |mock|            
-            mock.get "/cards/42.xml", {}, Card.new(:id => 42, :name => "Something Cool").to_xml
+            mock.get "/cards/42.xml", {}, Card.new(:number => 42, :id =>2342323, :name => "Something Cool").to_xml
             mock.get "/cards/42/transitions.xml", {}, [Transition.new(:id => 10, :name => "Descoped")].to_xml
         end
     end
@@ -11,6 +11,11 @@ describe Card do
     it "Should Get A Card From Mingle" do
         card = Card.find(42)
         card.name.should == "Something Cool"
+    end
+
+    it "Should Override the Id with the Card number" do
+        card = Card.find(42)
+        card.id.should == 42
     end
 
     it "Should Get The Transitions From Mingle" do
