@@ -6,7 +6,9 @@ $number_of_logs = 100
 $git_directory = "."
 
 require File.dirname(__FILE__) + '/ui/CardColumn'
-$columns = [CardColumn.new("number", "Number"), CardColumn.new("name", "Name")]
+$columns = [CardColumn.new("number", "Number"), 
+            CardColumn.new("name", "Name"),
+            CardColumn.new("Status") {|item| item.status} ]
 
 begin
     require File.dirname(__FILE__) + '/actual_config'

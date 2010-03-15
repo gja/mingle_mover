@@ -8,4 +8,8 @@ class Card < ActiveResource::Base
     def transitions
         get(:transitions).map {|props| Transition.new props }
     end
+
+    def status
+        properties.detect{ |p| p.name == "Status" }.value
+    end
 end
