@@ -10,6 +10,15 @@ class Card < ActiveResource::Base
     end
 
     def status
-        properties.detect{ |p| p.name == "Status" }.value
+        property = get_property "Status"
+        property = get_property "Defect Status" if not property
+
+        return "none" if not property
+        return property.value
+    end
+
+    private
+    def get_property(name)
+        properties.detect { |p| p.name == name }
     end
 end

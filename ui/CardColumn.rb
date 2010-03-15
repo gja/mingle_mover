@@ -4,8 +4,8 @@ class CardColumn
         @header = header
         @action = action
 
-        @header = name if @header == nil
-        @action = proc { |item| item.attributes[@name] } if @action == nil
+        @header = name if not @header
+        @action = proc { |item| item.attributes[@name] } if not @action
     end
 
     def value(item)

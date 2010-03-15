@@ -4,6 +4,6 @@ class GitDao
     end
 
     def log(*args)
-        return @git.log(*args)
+        @git.log(*args).to_a
     end
 end
