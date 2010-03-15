@@ -42,13 +42,17 @@ describe CardModel do
         @model.headerData(nil, nil, Qt::EditRole).should_not be_valid
         
         flags = @model.flags(nil)
+        flags.should have_flag Qt::ItemIsEnabled
         flags.should have_flag Qt::ItemIsSelectable
         flags.should_not have_flag Qt::ItemIsEditable
-        flags.should have_flag Qt::ItemIsEnabled
     end
 
     it "Should Return Headers" do
         @model.headerData(1).toString.should == "Card Name"
+    end
+
+    it "Should not return any vertical headers" do
+        @model.headerData(1, Qt::Vertical).should_not be_valid
     end
 
     def mock_index(row, col)
@@ -56,6 +60,6 @@ describe CardModel do
     end
 
     def have_flag(flag)
-        return simple_matcher("Have Flag Set") { |given| (given & flag) != 0 }
+        return simple_matcher("A flag that matches " + flag.to_s) { |given| (given & flag) != 0 }
     end
 end

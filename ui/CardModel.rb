@@ -29,6 +29,7 @@ class CardModel < Qt::AbstractTableModel
     def headerData(section, orientation=Qt::Horizontal, role=Qt::DisplayRole)
         invalid = Qt::Variant.new
         return invalid unless role == Qt::DisplayRole
+        return invalid unless orientation == Qt::Horizontal
 
         return Qt::Variant.new(@headers[section])
     end
