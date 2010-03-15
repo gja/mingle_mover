@@ -5,10 +5,9 @@ describe CardModel do
         cards = [Card.new(:id => 1, :name => "name1", :status => "In Progress"),
                     Card.new(:id => 2, :name => "name2", :status => "In Progress")]
 
-        columns = ["id", "name"]
-        headers = ["Card Number", "Card Name"]
+        columns = [CardColumn.new("id", "Card Number"), CardColumn.new("name", "Card Name")]
 
-        @model = CardModel.new cards, columns, headers
+        @model = CardModel.new cards, columns
     end
 
     it "Should Implement QAbstractTableModel" do

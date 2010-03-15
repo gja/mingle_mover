@@ -1,9 +1,8 @@
 class CardModel < Qt::AbstractTableModel
-    def initialize(collection,columns, headers)
+    def initialize(collection,columns)
         super()
         @collection = collection
         @columns = columns
-        @headers = headers
     end
 
     def rowCount(parent)
@@ -22,8 +21,8 @@ class CardModel < Qt::AbstractTableModel
         return invalid if (index.column < 0 || index.column > @columns.size)
         return invalid if item.nil?
 
-        attribute = @columns[index.column]
-        return Qt::Variant.new(item.attributes[attribute])
+        column = @columns[index.column]
+        return Qt::Variant.new(column.value item)
     end
 
     def headerData(section, orientation=Qt::Horizontal, role=Qt::DisplayRole)
@@ -31,7 +30,7 @@ class CardModel < Qt::AbstractTableModel
         return invalid unless role == Qt::DisplayRole
         return invalid unless orientation == Qt::Horizontal
 
-        return Qt::Variant.new(@headers[section])
+        return Qt::Variant.new(@columns[section].header)
     end
 
     def flags(index)

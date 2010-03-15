@@ -4,8 +4,9 @@ $url = "https://#{user}:#{password}@minglehosting.thoughtworks.com/PROJECTNAME/a
 $pattern = /Mingle-#\d+/
 $number_of_logs = 100
 $git_directory = "."
-$columns = ["number", "name", "status"]
-$headers = ["Card Number", "Name", "Status"]
+
+require File.dirname(__FILE__) + '/ui/CardColumn'
+$columns = [CardColumn.new("number", "Number"), CardColumn.new("name", "Name")]
 
 begin
     require File.dirname(__FILE__) + '/actual_config'
