@@ -7,7 +7,7 @@ git_parse = GitParse.new git_dao, $number_of_logs, $pattern
 
 properties = git_parse.get_mingle_numbers
 
-cards = properties.map{|property| Card.find_with_properties(property)}
+cards = FetchCards.new.fetch properties
 
 Qt::Application.new(ARGV) do
     view_model = CardModel.new(cards, $columns)
