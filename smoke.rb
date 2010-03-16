@@ -14,6 +14,9 @@ Qt::Application.new(ARGV) do
 
     table = Qt::TableView.new do
         setModel view_model
+        resize 700, 300
+        resizeColumnsToContents
+        setColumnWidth(2, columnWidth(2) / 2)
         show
     end
 
