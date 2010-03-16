@@ -10,7 +10,7 @@ describe GitParse do
 
         results = git_parse.get_mingle_numbers
 
-        results.length.should == 1
+        results.should have(1).items
         results[0].should == 1234
     end
 end

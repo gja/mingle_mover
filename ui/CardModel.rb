@@ -22,7 +22,7 @@ class CardModel < Qt::AbstractTableModel
         return invalid if item.nil?
 
         column = @columns[index.column]
-        return Qt::Variant.new(column.value item)
+        return Qt::Variant.new(column.value(item))
     end
 
     def headerData(section, orientation=Qt::Horizontal, role=Qt::DisplayRole)

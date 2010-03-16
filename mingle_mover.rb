@@ -1,7 +1,7 @@
 $: << File.dirname(__FILE__) + '/lib'
 $: << File.dirname(__FILE__) + '/ui'
 
-require 'activeresource'
+require 'active_resource'
 require 'git'
 require 'Qt4'
 
