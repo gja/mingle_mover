@@ -1,4 +1,5 @@
 $: << File.dirname(__FILE__) + '/lib'
+$: << File.dirname(__FILE__) + '/lib/dao'
 $: << File.dirname(__FILE__) + '/ui'
 
 require 'active_resource'

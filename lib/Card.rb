@@ -17,6 +17,12 @@ class Card < ActiveResource::Base
         return property.value
     end
 
+    def self.find_with_properties(properties)
+        card = Card.find(properties[:number])
+        card.committer = properties[:committer]
+        return card
+    end
+
     private
     def get_property(name)
         properties.detect { |p| p.name == name }

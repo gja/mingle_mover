@@ -41,4 +41,10 @@ describe Card do
         Card.find(43).status.should == "Ugly"
         Card.find(44).status.should == "none"
     end
+
+    it "Should Have Committer set when passed properties" do
+        card = Card.find_with_properties({:number => 42, :committer => "Tejas Dinkar" })
+        card.name.should == "Something Cool"
+        card.committer.should == "Tejas Dinkar"
+    end
 end

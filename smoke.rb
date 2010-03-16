@@ -5,9 +5,9 @@ require 'mingle_mover'
 git_dao = GitDao.new "."
 git_parse = GitParse.new git_dao, $number_of_logs, $pattern
 
-numbers = git_parse.get_mingle_numbers.uniq!
+properties = git_parse.get_mingle_numbers
 
-cards = numbers.map{|number| Card.find(number)}
+cards = properties.map{|property| Card.find_with_properties(property)}
 
 Qt::Application.new(ARGV) do
     view_model = CardModel.new(cards, $columns)

@@ -7,8 +7,9 @@ $git_directory = "."
 
 require File.dirname(__FILE__) + '/ui/CardColumn'
 $columns = [CardColumn.new("number", "Number"), 
+            CardColumn.new("committer", "Committer") {|item| item.committer},
             CardColumn.new("name", "Name"),
-            CardColumn.new("Status") {|item| item.status} ]
+            CardColumn.new("Status") {|item| item.status}]
 
 begin
     require File.dirname(__FILE__) + '/actual_config'
