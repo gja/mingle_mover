@@ -11,6 +11,10 @@ $columns = [CardColumn.new("number", "Number"),
             CardColumn.new("name", "Name"),
             CardColumn.new("Status") {|item| item.status}]
 
+$good_status = ["QA Closed", "Ready for QA", "Available in UAT"]
+$bad_status = ["In Dev"]
+$ugly_status = ["Ready for Dev"]
+
 begin
     require File.dirname(__FILE__) + '/actual_config'
 rescue LoadError

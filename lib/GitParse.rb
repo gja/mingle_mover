@@ -1,5 +1,5 @@
 class GitParse
-    def initialize(git_dao, number, regex)
+    def initialize(git_dao, number = $number_of_logs, regex = $pattern)
         @git_dao = git_dao
         @number = number
         @regex = regex

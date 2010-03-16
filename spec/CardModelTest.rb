@@ -2,12 +2,12 @@ require 'config'
 
 describe CardModel do
     before do
-        cards = [Card.new(:id => 1, :name => "name1", :status => "In Progress"),
-                    Card.new(:id => 2, :name => "name2", :status => "In Progress")]
+        cards = [Card.new(:id => 1, :name => "name1", :status => "Good"),
+                    Card.new(:id => 2, :name => "name2", :status => "Ugly")]
 
-        columns = [CardColumn.new("id", "Card Number"), CardColumn.new("name", "Card Name")]
+        columns = [CardColumn.new("id", "Card Number"), CardColumn.new("name", "Card Name"), CardColumn.new("status")]
 
-        @model = CardModel.new cards, columns
+        @model = CardModel.new cards, columns, ["Good"], ["Ugly"]
     end
 
     it "Should Implement QAbstractTableModel" do
@@ -19,7 +19,7 @@ describe CardModel do
     end
 
     it "Should Contain A List of Columns" do
-        @model.columnCount(nil).should == 2
+        @model.columnCount(nil).should == 3
     end
 
     it "Should Return Invalid if Row or Column is out of bounds" do
@@ -52,6 +52,12 @@ describe CardModel do
 
     it "Should not return any vertical headers" do
         @model.headerData(1, Qt::Vertical).should_not be_valid
+    end
+
+    it "Should color a row according to the status" do
+        @model.data(mock_index(1,2), Qt::ForegroundRole).value.should == Qt::Color.new(Qt::red)
+        @model.data(mock_index(0,2), Qt::ForegroundRole).value.should == Qt::Color.new(Qt::green)
+        @model.data(mock_index(0,0), Qt::ForegroundRole).should_not be_valid
     end
 
     def mock_index(row, col)
