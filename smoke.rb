@@ -12,11 +12,15 @@ cards = FetchCards.new.fetch properties
 Qt::Application.new(ARGV) do
     view_model = CardModel.new(cards)
 
-    table = Qt::TableView.new do
-        setModel view_model
+    Qt::MainWindow.new do
+        self.centralWidget = CardTableView.new do
+            setModel view_model
+            resizeColumnsToContents
+            setColumnWidth(2, columnWidth(2) / 2)
+        end
+
+        self.windowTitle = "Oops, I mingled again!"
         resize 700, 300
-        resizeColumnsToContents
-        setColumnWidth(2, columnWidth(2) / 2)
         show
     end
 
