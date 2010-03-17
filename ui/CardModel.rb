@@ -46,10 +46,14 @@ class CardModel < Qt::AbstractTableModel
     def get_color(index, item)
         value = get_value(index, item)
 
-        return Qt::Variant.new(Qt::red) if @ugly.include? value
-        return Qt::Variant.new(Qt::green) if @good.include? value
+        return get_brush_variant(Qt::red) if @ugly.include? value
+        return get_brush_variant(Qt::green) if @good.include? value
 
         return invalid
+    end
+
+    def get_brush_variant(color)
+        qVariantFromValue(Qt::Brush.new(color))
     end
 
     def invalid

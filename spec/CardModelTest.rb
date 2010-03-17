@@ -55,8 +55,8 @@ describe CardModel do
     end
 
     it "Should color a row according to the status" do
-        @model.data(mock_index(1,2), Qt::ForegroundRole).value.should == Qt::Color.new(Qt::red)
-        @model.data(mock_index(0,2), Qt::ForegroundRole).value.should == Qt::Color.new(Qt::green)
+        @model.data(mock_index(1,2), Qt::ForegroundRole).value.color.should == Qt::Color.new(Qt::red)
+        @model.data(mock_index(0,2), Qt::ForegroundRole).value.color.should == Qt::Color.new(Qt::green)
         @model.data(mock_index(0,0), Qt::ForegroundRole).should_not be_valid
     end
 
