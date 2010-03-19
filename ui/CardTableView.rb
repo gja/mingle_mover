@@ -1,4 +1,4 @@
-class CardTableView < Qt::TableWidget
+class CardTableView < Qt::TableView
     def mousePressEvent(event)
     end
 
