@@ -11,9 +11,9 @@ $columns = [CardColumn.new("number", "Number"),
             CardColumn.new("name", "Name"),
             CardColumn.new("Status") {|item| item.status}]
 
-$good_status = ["QA Closed", "Ready for QA", "In QA", "Available in UAT"]
-$bad_status = ["In Dev"]
-$ugly_status = ["Ready for Dev"]
+$good_status = ["QA Closed", "Ready for QA", "In QA", "Available in UAT", "Ready for Acceptance", "Accepted"]
+$bad_status = ["In Dev", "In Development"]
+$ugly_status = ["Ready for Development"]
 
 begin
     require File.dirname(__FILE__) + '/actual_config'
