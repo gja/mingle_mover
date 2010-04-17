@@ -38,6 +38,10 @@ class CardModel < Qt::AbstractTableModel
         return Qt::ItemIsSelectable | Qt::ItemIsEnabled
     end
 
+    def [](index)
+        return @collection[index]
+    end
+
   private
     def get_value(index, item)
         @columns[index.column].value(item)

@@ -18,6 +18,10 @@ describe CardModel do
         @model.rowCount(nil).should == 2
     end
 
+    it "Should Be Able To Give Back the Cards" do
+        @model[0].name.should == "name1"
+    end
+
     it "Should Contain A List of Columns" do
         @model.columnCount(nil).should == 3
     end

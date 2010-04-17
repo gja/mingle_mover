@@ -14,12 +14,31 @@ describe CardTableView do
         end
     end
 
-    # This test is to compensate for what I think is a bug in QtRuby
     it "Should Gracefully Handle Clicking on a Cell" do
         @view.mousePressEvent(Qt::MouseEvent.new(Qt::Event::MouseButtonPress, Qt::Point.new(0,0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier))
         @view.mouseMoveEvent(Qt::MouseEvent.new(Qt::Event::MouseMove, Qt::Point.new(0,0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier))
     end
 
+    it "Should Get a signal to display context menu on right click" do
+        x0 = @view.rowViewportPosition 0
+        x1 = @view.rowViewportPosition 1
+
+        @view.should emit_signal_on_mouse_press(Qt::LeftButton, Qt::Point.new(0, x1), nil)
+        @view.should emit_signal_on_mouse_press(Qt::RightButton, Qt::Point.new(0, x1), 11)
+        @view.should emit_signal_on_mouse_press(Qt::RightButton, Qt::Point.new(0, x0), 10)
+    end
+
+    def emit_signal_on_mouse_press(button, point, value)
+        return simple_matcher(value.to_s + " when " + button.to_s + " is pressed at " + point.y.to_s) do |given|
+            called = nil
+            given.connect(SIGNAL('rightClickedOn(int)')) do |g|
+                called = g
+            end
+
+            given.mousePressEvent(Qt::MouseEvent.new(Qt::Event::MouseButtonPress, point, button, button, Qt::NoModifier))
+            called.should == value
+        end
+    end
 
     after(:all) do
         @app.dispose
