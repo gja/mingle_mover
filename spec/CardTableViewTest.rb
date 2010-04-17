@@ -12,6 +12,9 @@ describe CardTableView do
         @view = CardTableView.new do
             setModel model
         end
+
+        @row1 = @view.rowViewportPosition 0
+        @row2 = @view.rowViewportPosition 1
     end
 
     it "Should Gracefully Handle Clicking on a Cell" do
@@ -20,24 +23,35 @@ describe CardTableView do
     end
 
     it "Should Get a signal to display context menu on right click" do
-        x0 = @view.rowViewportPosition 0
-        x1 = @view.rowViewportPosition 1
+        @view.should emit_signal_on_mouse_press(Qt::RightButton, Qt::Point.new(0, @row2), 11)
+        @view.should emit_signal_on_mouse_press(Qt::RightButton, Qt::Point.new(0, @row1), 10)
+    end
 
-        @view.should emit_signal_on_mouse_press(Qt::LeftButton, Qt::Point.new(0, x1), nil)
-        @view.should emit_signal_on_mouse_press(Qt::RightButton, Qt::Point.new(0, x1), 11)
-        @view.should emit_signal_on_mouse_press(Qt::RightButton, Qt::Point.new(0, x0), 10)
+    it "Should Ignore Other Mouse Events" do
+        @view.should ignore_mouse_press(Qt::LeftButton, Qt::Point.new(0, @row1))
+        @view.should ignore_mouse_press(Qt::RightButton, Qt::Point.new(0, @row1), Qt::Event::MouseButtonRelease)
+    end
+
+    def ignore_mouse_press(button, point, event = Qt::Event::MouseButtonPress)
+        return simple_matcher("An object not responding to click of " + button.to_s) do |given|
+            assert_on_signal_after_mouse_event(given, button, point, event) { |c| c.should be_nil }
+        end
     end
 
     def emit_signal_on_mouse_press(button, point, value)
         return simple_matcher(value.to_s + " when " + button.to_s + " is pressed at " + point.y.to_s) do |given|
-            called = nil
-            given.connect(SIGNAL('rightClickedOn(int)')) do |g|
-                called = g
-            end
-
-            given.mousePressEvent(Qt::MouseEvent.new(Qt::Event::MouseButtonPress, point, button, button, Qt::NoModifier))
-            called.should == value
+            assert_on_signal_after_mouse_event(given, button, point) { |c| c.value.number.should == value }
         end
+    end
+
+    def assert_on_signal_after_mouse_event(given, button, point, event = Qt::Event::MouseButtonPress)
+        called = nil
+        given.connect(SIGNAL('rightClickedOn(QVariant)')) do |g|
+            called = g
+        end
+
+        given.mousePressEvent(Qt::MouseEvent.new(event, point, button, button, Qt::NoModifier))
+        yield called
     end
 
     after(:all) do
