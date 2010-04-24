@@ -13,4 +13,28 @@ describe Qt::RubyVariant do
         var.should be_a Qt::Variant
         var.value.foo.should == "bar"
     end
+
+    it "Should Be Possible to Emit a Ruby Class" do
+        variant = @object.to_variant
+        app = Qt::Application.new(ARGV) do
+            spy = Qt::SignalSpy.new
+            Qt::Object.connect(spy, SIGNAL('signal(QVariant)'), spy, SLOT('receive(QVariant)'))
+            spy.emit(variant)
+            spy.received.foo.should == "bar"
+        end
+    end
+end
+
+class Qt::SignalSpy < Qt::Object
+    signals 'signal(QVariant)'
+    def emit(object)
+        super signal(object)
+    end
+
+    slots 'receive(QVariant)'
+    def receive(object)
+        @received = object.value
+    end
+
+    attr_accessor :received
 end

@@ -65,7 +65,7 @@ describe CardModel do
     end
 
     def mock_index(row, col)
-        stub(:row => row, :column => col);
+        stub(:row => row, :column => col)
     end
 
     def have_flag(flag)
