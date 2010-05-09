@@ -2,54 +2,55 @@ require 'active_resource'
 require 'Qt4'
 
 class RubySignalSpy < Qt::Object
-    def initialize
-        @calls = {}
-        @actions = {}
-        super
-    end
-
-    def mocked_slot(name, &block)
-        Qt::Object::slots "#{name}()"
-        
-        @calls[name] = []
-        @actions[name] = block
-        eval <<-eos
-            def #{name}(*params)
-                @calls[:#{name}] << params
-                exec_action_for(:#{name})
-            end
-        eos
-    end
-
-    def exec_action_for(name)
-        instance_eval &(@actions[name]) if @actions[name]
+    def self.create(*args, &block)
+        Class.new(self).new(*args, &block)
     end
 
     def count(name)
         @calls[name].size
     end
 
-    def params(name, invocation = 1)
-        @calls[name][invocation -1]
+    def params(name, invocation = 0)
+        @calls[name][invocation]
     end
 
-    def mocked_slots(*args)
-        args.each { |arg| mocked_slot arg }
+    def method_missing(name, *args, &block)
+        @calls[name.to_sym] << args
+        exec_action_for(name.to_sym, args)
     end
 
-    def signals(*args)
-        self.class.signals(*args)
+    def responds_to?(name)
+        true
+    end
+
+  private
+    def initialize
+        @calls = {}
+        def @calls.[](index)
+            super || self[index] = []
+        end
+        @actions = {}
+        super
+    end
+
+    def mocked_slots(*names, &block)
+        slots *names
+        names.each { |name| @actions[name] = block }
+    end
+
+    def exec_action_for(name, args)
+        @actions[name].call(self, args) if @actions[name]
+    end
+
+    def slots(*args)
+        self.class.slots(*args)
     end
 end
 
 describe RubySignalSpy do
-    before(:all) do
-        @app = Qt::Application.new(ARGV)
-    end
-
     it "Should Provide Methods For All Mocked Slots" do
         mocked = RubySignalSpy.new do
-            mocked_slots :foo, :bar
+            slots :foo, :bar
         end
         
         mocked.foo
@@ -62,39 +63,54 @@ describe RubySignalSpy do
 
     it "Should Store the Parameters Passed" do
         mocked = RubySignalSpy.new do
-            mocked_slots :foo
+            slots :foo
         end
 
         mocked.foo(42)
         mocked.foo("bar", "baz")
 
         mocked.params(:foo).should == [42]
-        mocked.params(:foo, 2).should == ["bar", "baz"]
+        mocked.params(:foo, 1).should == ["bar", "baz"]
     end
 
-    it "Should be able to emit a signal when called" do
-        class Reciever < RubySignalSpy
-            mocked_slots :revieved
-        end
+    it "Should be able to execute a block" do
+        a = 0
 
-        reciever = Reciever.new
-
-        sender = RubySignalSpy.new do
-            signals "sending()"
-            mocked_slot :send do
-                emit "sending()"
+        mocked = RubySignalSpy.create do
+            mocked_slots :foo, :bar do |obj, params|
+                obj.should == mocked
+                params.should == [1, 2]
+                a = a+1
             end
         end
 
-        Qt::Object.connect(sender, SIGNAL(:sending), reciever, SLOT(:recieved))
-
-        sender.send
-
-        reciever.count(:recieved).should == 1
+        mocked.foo(1, 2)
+        mocked.bar(1, 2)
+        a.should == 2
+        mocked.count(:foo).should == 1
+        mocked.count(:bar).should == 1
     end
 
-    after(:all) do
-        @app.dispose
+    it "Should be able to emit a signal when called" do
+        reciever = RubySignalSpy.create do
+            slots "recieved(int, int)"                      # Explicitly name slots with parameters
+            mocked_slot :some_other_slot do |spy, params|   # Pass a block to be executed when called
+            end                                             # You must call mocked_slot with a symbol
+        end
+
+        class Sender < Qt::Object
+            signals "sending(int, int)"
+            def broadcast
+                emit sending(4, 2)
+            end
+        end
+
+        sender = Sender.new
+
+        Qt::Object.connect(sender, SIGNAL("sending(int, int)"), reciever, SLOT("recieved(int, int)"))
+        sender.broadcast
+        reciever.count(:recieved).should == 1               # Get count of calls
+        reciever.params(:recieved, 0).should == [4, 2]      # Get the parameters of nth invocation
     end
 end
 
