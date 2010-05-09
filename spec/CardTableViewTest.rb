@@ -40,7 +40,7 @@ describe CardTableView do
 
     def emit_signal_on_mouse_press(button, point, value)
         return simple_matcher(value.to_s + " when " + button.to_s + " is pressed at " + point.y.to_s) do |given|
-            assert_on_signal_after_mouse_event(given, button, point) { |c| c.value.number.should == value }
+            assert_on_signal_after_mouse_event(given, button, point) { |c| c.to_object.number.should == value }
         end
     end
 
