@@ -1,5 +1,4 @@
 require 'config'
-require 'ruby_signal_spy_spec'
 
 describe CardTableView do
     before(:each) do
