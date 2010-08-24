@@ -8,4 +8,9 @@ Spec::Rake::SpecTask.new do |t|
     t.rcov_opts += ['--exclude', 'spec,lib/dao']
 end
 
+desc "irb with libraries loaded"
+task :repl do
+  exec 'irb -I lib -r config -r mingle_mover'
+end
+
 task :default => :spec
