@@ -1,4 +1,5 @@
 require 'config'
+require 'ruby_signal_spy_spec'
 
 describe CardTableView do
     before(:each) do
@@ -18,15 +19,15 @@ describe CardTableView do
         @view.mouseMoveEvent(Qt::MouseEvent.new(Qt::Event::MouseMove, Qt::Point.new(0,0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier))
     end
 
-#     it "Should Get a signal to display context menu on right click" do
-#         @view.should emit_signal_on_mouse_press(Qt::RightButton, Qt::Point.new(0, @row2), 11)
-#         @view.should emit_signal_on_mouse_press(Qt::RightButton, Qt::Point.new(0, @row1), 10)
-#     end
-# 
-#    it "Should Ignore Other Mouse Events" do
-#        @view.should ignore_mouse_press(Qt::LeftButton, Qt::Point.new(0, @row1))
-#        @view.should ignore_mouse_press(Qt::RightButton, Qt::Point.new(0, @row1), Qt::Event::MouseButtonRelease)
-#    end
+    it "Should Get a signal to display context menu on right click" do
+        @view.should emit_signal_on_mouse_press(Qt::RightButton, Qt::Point.new(0, @row2), 11)
+        @view.should emit_signal_on_mouse_press(Qt::RightButton, Qt::Point.new(0, @row1), 10)
+    end
+
+    it "Should Ignore Other Mouse Events" do
+        @view.should ignore_mouse_press(Qt::LeftButton, Qt::Point.new(0, @row1))
+        @view.should ignore_mouse_press(Qt::RightButton, Qt::Point.new(0, @row1), Qt::Event::MouseButtonRelease)
+    end
  
     def ignore_mouse_press(button, point, event = Qt::Event::MouseButtonPress)
         return simple_matcher("An object not responding to click of " + button.to_s) do |given|
@@ -41,12 +42,14 @@ describe CardTableView do
     end
 
     def assert_on_signal_after_mouse_event(given, button, point, event = Qt::Event::MouseButtonPress)
-        called = nil
-        given.connect(SIGNAL('rightClickedOn(QVariant)')) do |g|
-            called = g
+        spy = RubySignalSpy.create do
+          slots "recieved(QVariant)"
         end
 
+        Qt::Object.connect(given, SIGNAL('rightClickedOn(QVariant)'), spy, SLOT('recieved(QVariant)'))
+
         given.mousePressEvent(Qt::MouseEvent.new(event, point, button, button, Qt::NoModifier))
-        yield called
+        called = spy.params(:recieved, 0) || [nil]
+        yield called[0]
     end
 end
