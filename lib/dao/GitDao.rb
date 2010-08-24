@@ -1,9 +1,10 @@
 class GitDao
     def initialize(directory)
-        @git = Git.open(directory)
     end
 
     def log(*args)
-        @git.log(*args).to_a
+      number = args[0] || 100
+      messages = `git log -n #{number} --pretty=format:%an////%s`.split("\n")
+      messages.collect!{|message| GitCommitMessage.new message}
     end
 end
