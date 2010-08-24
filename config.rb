@@ -1,6 +1,8 @@
 user = 'tejasd'
 password = 'password'
-$url = "https://#{user}:#{password}@minglehosting.thoughtworks.com/PROJECTNAME/api/v2/projects/PROJECTSUBPART"
+$mingle_instance = "https://#{user}:#{password}@minglehosting.thoughtworks.com/INSTANCE"
+$project_name = "PROJECTNAME"
+$url = "#{$mingle_instance}/api/v2/projects/#{$project_name}"
 $pattern = /Mingle-#\d+/
 $number_of_logs = 100
 $git_directory = "."
