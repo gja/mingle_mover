@@ -27,6 +27,12 @@ describe CardTableView do
         @view.should ignore_mouse_press(Qt::LeftButton, Qt::Point.new(0, @row1))
         @view.should ignore_mouse_press(Qt::RightButton, Qt::Point.new(0, @row1), Qt::Event::MouseButtonRelease)
     end
+
+    it "Should Launch a Url on double click" do
+        Card.any_instance.stubs(:url).returns("http://google.com")
+        Qt::DesktopServices.expects(:openUrl).with(){|url| url.to_string == "http://google.com" }
+        @view.mouseDoubleClickEvent(Qt::MouseEvent.new(Qt::Event::MouseButtonPress, Qt::Point.new(0,@row1), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier))
+    end
  
     def ignore_mouse_press(button, point, event = Qt::Event::MouseButtonPress)
         return simple_matcher("An object not responding to click of " + button.to_s) do |given|

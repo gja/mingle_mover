@@ -11,4 +11,8 @@ def create_app
   Qt::Application.new(ARGV)
 end
 
+Spec::Runner.configure do |config|
+    config.mock_with :mocha
+end
+
 @app = @app || create_app
