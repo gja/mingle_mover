@@ -20,7 +20,7 @@ Qt::Application.new(ARGV) do
         end
 
         self.windowTitle = "Oops, I mingled again!"
-        resize 700, 300
+        resize 640, 480
         show
     end
 
