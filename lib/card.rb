@@ -17,6 +17,10 @@ class Card < ActiveResource::Base
         return property.value
     end
 
+    def url
+        "#{$mingle_instance}/projects/#{$project_name}/cards/#{id}"
+    end
+
     def self.find_with_properties(properties)
         card = Card.find(properties[:number])
         card.committer = properties[:committer]

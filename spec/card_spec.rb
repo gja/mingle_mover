@@ -47,4 +47,12 @@ describe Card do
         card.name.should == "Something Cool"
         card.committer.should == "Tejas Dinkar"
     end
+
+    it "Should be able to get the url to view the card" do
+        $mingle_instance = "http://mingle.com"
+        $project_name = "foo"
+        card = Card.find 42
+
+        card.url.should == "http://mingle.com/projects/foo/cards/42"
+    end
 end
