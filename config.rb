@@ -5,7 +5,7 @@ $pattern = /Mingle-#\d+/
 $number_of_logs = 100
 $git_directory = "."
 
-require File.dirname(__FILE__) + '/ui/CardColumn'
+require File.dirname(__FILE__) + '/ui/card_column'
 $columns = [CardColumn.new("number", "Number"), 
             CardColumn.new("committer", "Committer") {|item| item.committer},
             CardColumn.new("name", "Name"),
