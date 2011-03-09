@@ -2,11 +2,9 @@ $: << File.dirname(__FILE__)
 require 'config'
 require 'mingle_mover'
 
-git_dao = GitDao.new "."
+git_dao = GitDao.new $folder
 git_parse = GitParse.new git_dao
-
 properties = git_parse.get_mingle_numbers
-
 cards = FetchCards.new.fetch properties
 
 Qt::Application.new(ARGV) do
