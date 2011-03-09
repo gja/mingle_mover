@@ -10,5 +10,9 @@ set :haml, :format => :html5
 set :show_exceptions => false
 
 get "/" do
-  haml :home, :layout => false, :locals => {:cards => get_cards}
+  haml :home, :layout => false, :locals => {:branches => ["master", "workflow"]}
+end
+
+get "/branch/:branch" do |branch|
+  haml :branch, :layout => false, :locals => {:cards => get_cards(branch)}
 end

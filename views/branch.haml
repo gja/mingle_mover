@@ -1,0 +1,14 @@
+%html
+  %head
+    %title Oops, I mingled again
+  %body
+    #content
+      %center
+        %table{ :border => "1" }
+          - for card in cards
+            %tr
+              %td
+                %a{:href => card.url}= "#" + card.number.to_s
+              %td= card.name
+              %td= card.committer
+              %td= card.status
