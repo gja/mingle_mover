@@ -3,9 +3,12 @@
     %title Oops, I mingled again
   %body
     #content
-      #main
-        #home_button{:onclick => "location.href='#{donate}'"}
-          %center
-            %a{:href => donate} Click to find a new home for your old computer
-      #footer        
-        %center Login | Charities | About
+      %center
+        %table{ :border => "1" }
+          - for card in cards
+            %tr
+              %td
+                %a{:href => card.url}= "#" + card.number.to_s
+              %td= card.name
+              %td= card.committer
+              %td= card.status

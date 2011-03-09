@@ -15,3 +15,10 @@ require 'card_column'
 require 'fetch_cards'
 require 'card_table_view'
 require 'ruby_variant'
+
+def get_cards
+  git_dao = GitDao.new $folder
+  git_parse = GitParse.new git_dao
+  properties = git_parse.get_mingle_numbers
+  cards = FetchCards.new.fetch properties
+end

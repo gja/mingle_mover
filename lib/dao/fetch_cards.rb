@@ -1,3 +1,5 @@
+require 'ostruct'
+
 class FetchCards
     def fetch(properties)
         threads = properties.map do |prop|
@@ -5,7 +7,7 @@ class FetchCards
             begin
               Card.find_with_properties p
             rescue
-              nil
+              OpenStruct.new(:number => p[:number], :url => $safe_mingle_instance, :committer => p[:committer], :name => "Unable to load card", :status => "Unknown")
             end
           end
         end

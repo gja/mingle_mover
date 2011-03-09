@@ -18,7 +18,7 @@ class Card < ActiveResource::Base
     end
 
     def url
-        "#{$mingle_instance}/projects/#{$project_name}/cards/#{id}"
+        "#{$safe_mingle_instance}/projects/#{$project_name}/cards/#{id}"
     end
 
     def self.find_with_properties(properties)

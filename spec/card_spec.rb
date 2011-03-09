@@ -49,7 +49,7 @@ describe Card do
     end
 
     it "Should be able to get the url to view the card" do
-        $mingle_instance = "http://mingle.com"
+        $safe_mingle_instance = "http://mingle.com"
         $project_name = "foo"
         card = Card.find 42
 
