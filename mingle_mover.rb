@@ -7,6 +7,7 @@ require 'Qt4'
 
 require 'card'
 require 'transition'
+require 'card_web'
 require 'git_dao'
 require 'git_parse'
 require 'git_commit_message'

@@ -7,11 +7,7 @@ require 'mingle_mover'
 $:.unshift File.dirname(__FILE__) + "/lib/"
 
 class Card
-  def style
-        return 'color: red' if $ugly_status.include? status
-        return 'color: green' if $good_status.include? status
-        'color: black'
-  end
+  include CardWeb
 end
 
 set :haml, :format => :html5
