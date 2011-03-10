@@ -14,7 +14,7 @@ $columns = [CardColumn.new("number", "Number"),
             CardColumn.new("name", "Name"),
             CardColumn.new("Status") {|item| item.status}]
 
-$good_status = ["QA Closed", "Ready for QA", "In QA", "Available in UAT", "Ready for Acceptance", "Accepted"]
+$good_status = ["QA Closed", "Ready for QA", "In QA", "Available in UAT", "Ready for Acceptance", "Accepted", "Ready for Showcase"]
 $bad_status = ["In Dev", "In Development"]
 $ugly_status = ["Open", "Ready for Development"]
 

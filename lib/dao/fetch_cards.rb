@@ -7,7 +7,7 @@ class FetchCards
             begin
               Card.find_with_properties p
             rescue
-              OpenStruct.new(:number => p[:number], :url => $safe_mingle_instance, :committer => p[:committer], :name => "Unable to load card", :status => "Unknown")
+              OpenStruct.new(:number => p[:number], :url => $safe_mingle_instance, :committer => p[:committer], :name => "Unable to load card", :status => "Unknown", :style => "color: red")
             end
           end
         end

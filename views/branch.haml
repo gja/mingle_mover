@@ -11,4 +11,5 @@
                 %a{:href => card.url}= "#" + card.number.to_s
               %td= card.name
               %td= card.committer
-              %td= card.status
+              %td
+                %div{:style => card.style}= card.status
